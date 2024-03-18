@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 
 import { hightlightsSlides } from "../constants";
 import { pauseImg, playImg, replayImg } from "../utils";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const VideoCarousel = () => {
   const videoRef = useRef([]);
@@ -31,6 +34,7 @@ const VideoCarousel = () => {
     gsap.to("#video", {
       scrollTrigger: {
         trigger: "#video",
+        start: "10% bottom",
         toggleActions: "restart none none none",
       },
       onComplete: () => {
@@ -62,6 +66,10 @@ const VideoCarousel = () => {
 
     if (span[videoId]) {
       let anim = gsap.to(span[videoId], {
+        scrollTrigger: {
+          trigger: "#video",
+          start: "10% bottom",
+        },
         onUpdate: () => {
           const progress = Math.ceil(anim.progress() * 100);
 
@@ -142,7 +150,7 @@ const VideoCarousel = () => {
 
   return (
     <>
-      <div className='flex items-center'>
+      <div className='flex items-center' id='video-carousel-container'>
         {hightlightsSlides.map((list, i) => (
           <div key={list.id} id='slider' className='sm:pr-20 pr-10'>
             <div className='video-carousel_container'>
